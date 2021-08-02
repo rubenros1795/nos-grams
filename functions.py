@@ -1,30 +1,5 @@
-from sklearn.feature_extraction.text import TfidfVectorizer
 from datetime import datetime, timedelta, date
-from gensim.models import KeyedVectors
-from scipy.cluster.vq import kmeans,vq
 from collections import OrderedDict
-import matplotlib.pyplot as plt
-from collections import Counter
-from numpy import vstack,array
-from nltk.corpus import stopwords
-from polyglot.text import Text
-from numpy.random import rand
-from glob import glob as gb
-import re, string,os,io
-from tqdm import tqdm
-import seaborn as sns
-import pandas as pd
-import numpy as np
-import subprocess
-import itertools
-import requests
-import polyglot
-import string
-import json
-import numpy
-import gensim
-import random
-import math
 
 
 def date_generator(format,start,end):

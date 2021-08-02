@@ -7,7 +7,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import nltk
 from nltk.collocations import *
-from gensim.models.phrases import Phrases
 from operator import itemgetter
 from glob import glob as gb
 from unidecode import unidecode
