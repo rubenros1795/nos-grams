@@ -1,9 +1,9 @@
 ![alt text](https://github.com/rubenros1795/nos-grams/blob/main/logo.png?raw=true)
 
--------------------------------------------------------------------------
 
 NOS-grams is an _n_-gram viewer for the NOS.nl [web archive](https://nos.nl/nieuws/archief). The viewer is accessible as a [Streamlit app](https://share.streamlit.io/rubenros1795/nos-grams/main/app.py)
 
+-------------------------------------------------------------------------
 
 ### Data :file_folder:
 
