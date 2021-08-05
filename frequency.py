@@ -138,6 +138,13 @@ def frequency(ngram_input,rolling_input,relative_input,viz_type,start_date,end_d
             tooltip=['Ngram','Frequency']
         ).properties(width=1000,height=300).configure_axis(grid=True,gridColor='lightgrey')
 
+        bar.configure_legend(
+            strokeColor='gray',
+            fillColor='#EEEEEE',
+            padding=10,
+            cornerRadius=10,
+            orient='top-right'
+        )
 
     if viz_type == "bar":
         bar = alt.Chart(df).mark_bar().encode(
@@ -147,12 +154,12 @@ def frequency(ngram_input,rolling_input,relative_input,viz_type,start_date,end_d
         ).properties(width=1000,height=300).configure_axis(grid=True).configure_view(stroke="transparent")
 
 
-    bar.configure_legend(
-        strokeColor='gray',
-        fillColor='#EEEEEE',
-        padding=10,
-        cornerRadius=10,
-        orient='top-right'
-    )
+        bar.configure_legend(
+            strokeColor='gray',
+            fillColor='#EEEEEE',
+            padding=10,
+            cornerRadius=10,
+            orient='top-right'
+        )
 
     return bar,df
