@@ -1,0 +1,204 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 500px;
+            height: 500px;
+            background-color: #ffffff;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+        #loadingBar {
+            position:absolute;
+            top:0px;
+            left:0px;
+            width: 500px;
+            height: 500px;
+            background-color:rgba(200,200,200,0.8);
+            -webkit-transition: all 0.5s ease;
+            -moz-transition: all 0.5s ease;
+            -ms-transition: all 0.5s ease;
+            -o-transition: all 0.5s ease;
+            transition: all 0.5s ease;
+            opacity:1;
+        }
+
+        #bar {
+            position:absolute;
+            top:0px;
+            left:0px;
+            width:20px;
+            height:20px;
+            margin:auto auto auto auto;
+            border-radius:11px;
+            border:2px solid rgba(30,30,30,0.05);
+            background: rgb(0, 173, 246); /* Old browsers */
+            box-shadow: 2px 0px 4px rgba(0,0,0,0.4);
+        }
+
+        #border {
+            position:absolute;
+            top:10px;
+            left:10px;
+            width:500px;
+            height:23px;
+            margin:auto auto auto auto;
+            box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+            border-radius:10px;
+        }
+
+        #text {
+            position:absolute;
+            top:8px;
+            left:530px;
+            width:30px;
+            height:50px;
+            margin:auto auto auto auto;
+            font-size:22px;
+            color: #000000;
+        }
+
+        div.outerBorder {
+            position:relative;
+            top:400px;
+            width:600px;
+            height:44px;
+            margin:auto auto auto auto;
+            border:8px solid rgba(0,0,0,0.1);
+            background: rgb(252,252,252); /* Old browsers */
+            background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+            background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+            background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+            background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+            background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+            border-radius:72px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+        }
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+<div id="loadingBar">
+    <div class="outerBorder">
+        <div id="text">0%</div>
+        <div id="border">
+            <div id="bar"></div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"id": "corona", "label": "corona", "shape": "dot", "size": 10}, {"id": "uitbraak", "label": "uitbraak", "shape": "dot", "size": 10}, {"id": "pandemie", "label": "pandemie", "shape": "dot", "size": 10}, {"id": "maatregelen", "label": "maatregelen", "shape": "dot", "size": 10}, {"id": "overzicht", "label": "overzicht", "shape": "dot", "size": 10}, {"id": "patienten", "label": "patienten", "shape": "dot", "size": 10}, {"id": "coronavirus", "label": "coronavirus", "shape": "dot", "size": 10}, {"id": "van", "label": "van", "shape": "dot", "size": 10}, {"id": "het", "label": "het", "shape": "dot", "size": 10}, {"id": "dammen", "label": "dammen", "shape": "dot", "size": 10}, {"id": "virus", "label": "virus", "shape": "dot", "size": 10}, {"id": "gebeurtenissen", "label": "gebeurtenissen", "shape": "dot", "size": 10}, {"id": "bundelen", "label": "bundelen", "shape": "dot", "size": 10}, {"id": "vastgesteld", "label": "vastgesteld", "shape": "dot", "size": 10}, {"id": "aparte", "label": "aparte", "shape": "dot", "size": 10}, {"id": "weerklank", "label": "weerklank", "shape": "dot", "size": 10}, {"id": "opbreken", "label": "opbreken", "shape": "dot", "size": 10}, {"id": "besmeurd", "label": "besmeurd", "shape": "dot", "size": 10}, {"id": "schokkend", "label": "schokkend", "shape": "dot", "size": 10}, {"id": "naoorlogse", "label": "naoorlogse", "shape": "dot", "size": 10}, {"id": "jacco", "label": "jacco", "shape": "dot", "size": 10}, {"id": "wallinga", "label": "wallinga", "shape": "dot", "size": 10}, {"id": "pad", "label": "pad", "shape": "dot", "size": 10}, {"id": "businesses", "label": "businesses", "shape": "dot", "size": 10}, {"id": "tawfiq", "label": "tawfiq", "shape": "dot", "size": 10}, {"id": "de", "label": "de", "shape": "dot", "size": 10}, {"id": "der", "label": "der", "shape": "dot", "size": 10}, {"id": "zaken", "label": "zaken", "shape": "dot", "size": 10}, {"id": "te", "label": "te", "shape": "dot", "size": 10}, {"id": "aantal", "label": "aantal", "shape": "dot", "size": 10}, {"id": "rivm", "label": "rivm", "shape": "dot", "size": 10}, {"id": "kabinet", "label": "kabinet", "shape": "dot", "size": 10}, {"id": "zich", "label": "zich", "shape": "dot", "size": 10}, {"id": "verspreidt", "label": "verspreidt", "shape": "dot", "size": 10}, {"id": "opgelopen", "label": "opgelopen", "shape": "dot", "size": 10}, {"id": "bestrijden", "label": "bestrijden", "shape": "dot", "size": 10}, {"id": "dreiging", "label": "dreiging", "shape": "dot", "size": 10}, {"id": "gestopt", "label": "gestopt", "shape": "dot", "size": 10}, {"id": "who", "label": "who", "shape": "dot", "size": 10}, {"id": "geldstromen", "label": "geldstromen", "shape": "dot", "size": 10}, {"id": "lagelonenlanden", "label": "lagelonenlanden", "shape": "dot", "size": 10}, {"id": "olieproductie", "label": "olieproductie", "shape": "dot", "size": 10}, {"id": "saudi", "label": "saudi", "shape": "dot", "size": 10}, {"id": "arabie", "label": "arabie", "shape": "dot", "size": 10}, {"id": "voeren", "label": "voeren", "shape": "dot", "size": 10}, {"id": "frenna", "label": "frenna", "shape": "dot", "size": 10}, {"id": "trucs", "label": "trucs", "shape": "dot", "size": 10}, {"id": "pretecho", "label": "pretecho", "shape": "dot", "size": 10}, {"id": "certificaten", "label": "certificaten", "shape": "dot", "size": 10}, {"id": "slimme", "label": "slimme", "shape": "dot", "size": 10}, {"id": "verloskundige", "label": "verloskundige", "shape": "dot", "size": 10}, {"id": "what", "label": "what", "shape": "dot", "size": 10}, {"id": "vws", "label": "vws", "shape": "dot", "size": 10}, {"id": "welzijn", "label": "welzijn", "shape": "dot", "size": 10}, {"id": "they", "label": "they", "shape": "dot", "size": 10}, {"id": "sport", "label": "sport", "shape": "dot", "size": 10}, {"id": "merkt", "label": "merkt", "shape": "dot", "size": 10}, {"id": "gang", "label": "gang", "shape": "dot", "size": 10}, {"id": "komen", "label": "komen", "shape": "dot", "size": 10}, {"id": "genomen", "label": "genomen", "shape": "dot", "size": 10}, {"id": "verspreiding", "label": "verspreiding", "shape": "dot", "size": 10}, {"id": "gelden", "label": "gelden", "shape": "dot", "size": 10}, {"id": "tegen", "label": "tegen", "shape": "dot", "size": 10}, {"id": "beheersen", "label": "beheersen", "shape": "dot", "size": 10}, {"id": "om", "label": "om", "shape": "dot", "size": 10}, {"id": "april", "label": "april", "shape": "dot", "size": 10}, {"id": "lombardije", "label": "lombardije", "shape": "dot", "size": 10}, {"id": "voor", "label": "voor", "shape": "dot", "size": 10}, {"id": "tot", "label": "tot", "shape": "dot", "size": 10}, {"id": "beperkingen", "label": "beperkingen", "shape": "dot", "size": 10}, {"id": "omroep", "label": "omroep", "shape": "dot", "size": 10}, {"id": "gaan", "label": "gaan", "shape": "dot", "size": 10}, {"id": "gokmen", "label": "gokmen", "shape": "dot", "size": 10}, {"id": "werkzaamheden", "label": "werkzaamheden", "shape": "dot", "size": 10}, {"id": "files", "label": "files", "shape": "dot", "size": 10}, {"id": "situatie", "label": "situatie", "shape": "dot", "size": 10}, {"id": "belangrijkste", "label": "belangrijkste", "shape": "dot", "size": 10}, {"id": "spoor", "label": "spoor", "shape": "dot", "size": 10}, {"id": "en", "label": "en", "shape": "dot", "size": 10}, {"id": "op", "label": "op", "shape": "dot", "size": 10}, {"id": "actuele", "label": "actuele", "shape": "dot", "size": 10}, {"id": "nijpend", "label": "nijpend", "shape": "dot", "size": 10}, {"id": "antwoorden", "label": "antwoorden", "shape": "dot", "size": 10}, {"id": "sportnieuws", "label": "sportnieuws", "shape": "dot", "size": 10}, {"id": "hier", "label": "hier", "shape": "dot", "size": 10}, {"id": "verzameld", "label": "verzameld", "shape": "dot", "size": 10}, {"id": "opgenomen", "label": "opgenomen", "shape": "dot", "size": 10}, {"id": "ziekenhuis", "label": "ziekenhuis", "shape": "dot", "size": 10}, {"id": "ziekenhuizen", "label": "ziekenhuizen", "shape": "dot", "size": 10}, {"id": "intensive", "label": "intensive", "shape": "dot", "size": 10}, {"id": "overleden", "label": "overleden", "shape": "dot", "size": 10}, {"id": "geweest", "label": "geweest", "shape": "dot", "size": 10}, {"id": "geremd", "label": "geremd", "shape": "dot", "size": 10}, {"id": "gebracht", "label": "gebracht", "shape": "dot", "size": 10}, {"id": "breda", "label": "breda", "shape": "dot", "size": 10}, {"id": "in", "label": "in", "shape": "dot", "size": 10}, {"id": "operaties", "label": "operaties", "shape": "dot", "size": 10}, {"id": "bedden", "label": "bedden", "shape": "dot", "size": 10}, {"id": "elders", "label": "elders", "shape": "dot", "size": 10}, {"id": "care", "label": "care", "shape": "dot", "size": 10}, {"id": "ic", "label": "ic", "shape": "dot", "size": 10}, {"id": "liggen", "label": "liggen", "shape": "dot", "size": 10}, {"id": "evaluatie", "label": "evaluatie", "shape": "dot", "size": 10}, {"id": "gommers", "label": "gommers", "shape": "dot", "size": 10}, {"id": "aan", "label": "aan", "shape": "dot", "size": 10}, {"id": "gevolgen", "label": "gevolgen", "shape": "dot", "size": 10}, {"id": "leeftijd", "label": "leeftijd", "shape": "dot", "size": 10}]);
+        edges = new vis.DataSet([{"from": "corona", "to": "uitbraak", "weight": 1}, {"from": "corona", "to": "pandemie", "weight": 1}, {"from": "corona", "to": "maatregelen", "weight": 1}, {"from": "corona", "to": "overzicht", "weight": 1}, {"from": "corona", "to": "patienten", "weight": 1}, {"from": "uitbraak", "to": "coronavirus", "weight": 1}, {"from": "uitbraak", "to": "van", "weight": 1}, {"from": "uitbraak", "to": "het", "weight": 1}, {"from": "uitbraak", "to": "dammen", "weight": 1}, {"from": "uitbraak", "to": "virus", "weight": 1}, {"from": "coronavirus", "to": "gebeurtenissen", "weight": 1}, {"from": "coronavirus", "to": "bundelen", "weight": 1}, {"from": "coronavirus", "to": "vastgesteld", "weight": 1}, {"from": "coronavirus", "to": "aparte", "weight": 1}, {"from": "coronavirus", "to": "dammen", "weight": 1}, {"from": "gebeurtenissen", "to": "weerklank", "weight": 1}, {"from": "gebeurtenissen", "to": "opbreken", "weight": 1}, {"from": "gebeurtenissen", "to": "besmeurd", "weight": 1}, {"from": "gebeurtenissen", "to": "schokkend", "weight": 1}, {"from": "gebeurtenissen", "to": "naoorlogse", "weight": 1}, {"from": "dammen", "to": "jacco", "weight": 1}, {"from": "dammen", "to": "wallinga", "weight": 1}, {"from": "dammen", "to": "pad", "weight": 1}, {"from": "dammen", "to": "businesses", "weight": 1}, {"from": "dammen", "to": "tawfiq", "weight": 1}, {"from": "van", "to": "de", "weight": 1}, {"from": "van", "to": "het", "weight": 1}, {"from": "van", "to": "der", "weight": 1}, {"from": "van", "to": "zaken", "weight": 1}, {"from": "van", "to": "te", "weight": 1}, {"from": "het", "to": "coronavirus", "weight": 1}, {"from": "het", "to": "virus", "weight": 1}, {"from": "het", "to": "aantal", "weight": 1}, {"from": "het", "to": "rivm", "weight": 1}, {"from": "het", "to": "kabinet", "weight": 1}, {"from": "virus", "to": "zich", "weight": 1}, {"from": "virus", "to": "verspreidt", "weight": 1}, {"from": "virus", "to": "dammen", "weight": 1}, {"from": "virus", "to": "opgelopen", "weight": 1}, {"from": "virus", "to": "bestrijden", "weight": 1}, {"from": "pandemie", "to": "dreiging", "weight": 1}, {"from": "pandemie", "to": "gestopt", "weight": 1}, {"from": "pandemie", "to": "who", "weight": 1}, {"from": "pandemie", "to": "geldstromen", "weight": 1}, {"from": "pandemie", "to": "lagelonenlanden", "weight": 1}, {"from": "dreiging", "to": "olieproductie", "weight": 1}, {"from": "dreiging", "to": "saudi", "weight": 1}, {"from": "dreiging", "to": "arabie", "weight": 1}, {"from": "dreiging", "to": "voeren", "weight": 1}, {"from": "dreiging", "to": "frenna", "weight": 1}, {"from": "gestopt", "to": "trucs", "weight": 1}, {"from": "gestopt", "to": "pretecho", "weight": 1}, {"from": "gestopt", "to": "certificaten", "weight": 1}, {"from": "gestopt", "to": "slimme", "weight": 1}, {"from": "gestopt", "to": "verloskundige", "weight": 1}, {"from": "who", "to": "what", "weight": 1}, {"from": "who", "to": "vws", "weight": 1}, {"from": "who", "to": "welzijn", "weight": 1}, {"from": "who", "to": "they", "weight": 1}, {"from": "who", "to": "sport", "weight": 1}, {"from": "geldstromen", "to": "merkt", "weight": 1}, {"from": "geldstromen", "to": "gang", "weight": 1}, {"from": "geldstromen", "to": "bestrijden", "weight": 1}, {"from": "geldstromen", "to": "virus", "weight": 1}, {"from": "geldstromen", "to": "komen", "weight": 1}, {"from": "lagelonenlanden", "to": "geldstromen", "weight": 1}, {"from": "lagelonenlanden", "to": "gang", "weight": 1}, {"from": "lagelonenlanden", "to": "bestrijden", "weight": 1}, {"from": "lagelonenlanden", "to": "virus", "weight": 1}, {"from": "lagelonenlanden", "to": "komen", "weight": 1}, {"from": "maatregelen", "to": "genomen", "weight": 1}, {"from": "maatregelen", "to": "verspreiding", "weight": 1}, {"from": "maatregelen", "to": "coronavirus", "weight": 1}, {"from": "maatregelen", "to": "gelden", "weight": 1}, {"from": "maatregelen", "to": "tegen", "weight": 1}, {"from": "genomen", "to": "uitbraak", "weight": 1}, {"from": "genomen", "to": "beheersen", "weight": 1}, {"from": "genomen", "to": "om", "weight": 1}, {"from": "genomen", "to": "verspreiding", "weight": 1}, {"from": "verspreiding", "to": "coronavirus", "weight": 1}, {"from": "verspreiding", "to": "virus", "weight": 1}, {"from": "verspreiding", "to": "van", "weight": 1}, {"from": "verspreiding", "to": "het", "weight": 1}, {"from": "verspreiding", "to": "te", "weight": 1}, {"from": "gelden", "to": "april", "weight": 1}, {"from": "gelden", "to": "lombardije", "weight": 1}, {"from": "gelden", "to": "voor", "weight": 1}, {"from": "gelden", "to": "tot", "weight": 1}, {"from": "gelden", "to": "beperkingen", "weight": 1}, {"from": "tegen", "to": "omroep", "weight": 1}, {"from": "tegen", "to": "coronavirus", "weight": 1}, {"from": "tegen", "to": "de", "weight": 1}, {"from": "tegen", "to": "gaan", "weight": 1}, {"from": "tegen", "to": "gokmen", "weight": 1}, {"from": "overzicht", "to": "werkzaamheden", "weight": 1}, {"from": "overzicht", "to": "files", "weight": 1}, {"from": "overzicht", "to": "situatie", "weight": 1}, {"from": "overzicht", "to": "gebeurtenissen", "weight": 1}, {"from": "overzicht", "to": "belangrijkste", "weight": 1}, {"from": "werkzaamheden", "to": "spoor", "weight": 1}, {"from": "werkzaamheden", "to": "files", "weight": 1}, {"from": "werkzaamheden", "to": "situatie", "weight": 1}, {"from": "werkzaamheden", "to": "en", "weight": 1}, {"from": "werkzaamheden", "to": "op", "weight": 1}, {"from": "files", "to": "spoor", "weight": 1}, {"from": "files", "to": "situatie", "weight": 1}, {"from": "files", "to": "op", "weight": 1}, {"from": "files", "to": "en", "weight": 1}, {"from": "files", "to": "het", "weight": 1}, {"from": "situatie", "to": "spoor", "weight": 1}, {"from": "situatie", "to": "actuele", "weight": 1}, {"from": "situatie", "to": "op", "weight": 1}, {"from": "situatie", "to": "nijpend", "weight": 1}, {"from": "situatie", "to": "antwoorden", "weight": 1}, {"from": "belangrijkste", "to": "gebeurtenissen", "weight": 1}, {"from": "belangrijkste", "to": "sportnieuws", "weight": 1}, {"from": "belangrijkste", "to": "hier", "weight": 1}, {"from": "belangrijkste", "to": "antwoorden", "weight": 1}, {"from": "belangrijkste", "to": "verzameld", "weight": 1}, {"from": "patienten", "to": "opgenomen", "weight": 1}, {"from": "patienten", "to": "ziekenhuis", "weight": 1}, {"from": "patienten", "to": "ziekenhuizen", "weight": 1}, {"from": "patienten", "to": "intensive", "weight": 1}, {"from": "patienten", "to": "overleden", "weight": 1}, {"from": "opgenomen", "to": "geweest", "weight": 1}, {"from": "opgenomen", "to": "ziekenhuis", "weight": 1}, {"from": "opgenomen", "to": "aantal", "weight": 1}, {"from": "opgenomen", "to": "geremd", "weight": 1}, {"from": "ziekenhuis", "to": "gebracht", "weight": 1}, {"from": "ziekenhuis", "to": "breda", "weight": 1}, {"from": "ziekenhuis", "to": "in", "weight": 1}, {"from": "ziekenhuizen", "to": "ziekenhuizen", "weight": 1}, {"from": "ziekenhuizen", "to": "operaties", "weight": 1}, {"from": "ziekenhuizen", "to": "bedden", "weight": 1}, {"from": "ziekenhuizen", "to": "elders", "weight": 1}, {"from": "intensive", "to": "care", "weight": 1}, {"from": "intensive", "to": "ic", "weight": 1}, {"from": "intensive", "to": "liggen", "weight": 1}, {"from": "intensive", "to": "evaluatie", "weight": 1}, {"from": "intensive", "to": "gommers", "weight": 1}, {"from": "overleden", "to": "aan", "weight": 1}, {"from": "overleden", "to": "gevolgen", "weight": 1}, {"from": "overleden", "to": "coronavirus", "weight": 1}, {"from": "overleden", "to": "leeftijd", "weight": 1}, {"from": "overleden", "to": "het", "weight": 1}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+        network.on("stabilizationProgress", function(params) {
+      		document.getElementById('loadingBar').removeAttribute("style");
+	        var maxWidth = 496;
+	        var minWidth = 20;
+	        var widthFactor = params.iterations/params.total;
+	        var width = Math.max(minWidth,maxWidth * widthFactor);
+
+	        document.getElementById('bar').style.width = width + 'px';
+	        document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
+	    });
+	    network.once("stabilizationIterationsDone", function() {
+	        document.getElementById('text').innerHTML = '100%';
+	        document.getElementById('bar').style.width = '496px';
+	        document.getElementById('loadingBar').style.opacity = 0;
+	        // really clean the dom element
+	        setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
+	    });
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>

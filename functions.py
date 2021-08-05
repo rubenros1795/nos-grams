@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta, date
 from collections import OrderedDict
+import base64
 
 
 def date_generator(format,start,end):
@@ -20,3 +21,13 @@ def date_generator(format,start,end):
         dates = [start, end]
         start, end = [datetime.strptime(_, "%Y-%m-%d") for _ in dates]
         return list(OrderedDict(((start + timedelta(_)).strftime(r"%Y-%m-%d"), None) for _ in range((end - start).days)).keys())
+
+def get_table_download_link(df):
+    """Generates a link allowing the data in a given panda dataframe to be downloaded
+    in:  dataframe
+    out: href string
+    """
+    csv = df.to_csv(index=False)
+    b64 = base64.b64encode(csv.encode()).decode()  # some strings <-> bytes conversions necessary here
+    href = f'<a href="data:file/csv;base64,{b64}">Download results (.csv)</a>'
+    return href

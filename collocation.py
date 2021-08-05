@@ -10,9 +10,17 @@ from nltk.collocations import *
 from operator import itemgetter
 from glob import glob as gb
 from unidecode import unidecode
+from pyvis.network import Network
+import streamlit as st
+import streamlit.components.v1 as components
+
+
+
 
 bigram_measures = nltk.collocations.BigramAssocMeasures()
 trigram_measures = nltk.collocations.TrigramAssocMeasures()
+
+# https://github.com/napoles-uach/streamlit_network/blob/main/got.py
 
 
 def preproc(text):
@@ -55,7 +63,6 @@ def collocation_month(finder,vocab,seed_term,topn=6,degree_limit=0):
     g = nx.from_pandas_edgelist(d, source='source', target='target',create_using=nx.DiGraph()) 
     dgrs = dict(g.degree)
 
-    plt.figure(figsize=(25,15))
     layout = nx.spring_layout(g,k=1.15)
 
     nx.draw_networkx_nodes(g,layout,node_size=2,alpha=0)
@@ -63,10 +70,34 @@ def collocation_month(finder,vocab,seed_term,topn=6,degree_limit=0):
     
     for node, (x, y) in layout.items():
         plt.text(x, y, node, fontsize=math.log(dgrs[node] * 5) * 6, ha='center', va='center',color = "red" if node == seed_term else "black",bbox=dict(facecolor='red', alpha=0.1))
-    plt.savefig(f'{seed_term}-network.png',dpi=250)    
 
-df_text = read_month('2020-03')
-finder = BigramCollocationFinder.from_words(" ".join(df_text['text']).split(' '),window_size=10)
-vocab = set(" ".join(df_text['text']).split(' '))
+    nt = Network("500px", "500px",notebook=True,heading='')
+    nt.from_nx(g)
+    nt.show('test.html')
 
-collocation_month(finder,vocab,'corona')
+
+def coll_network(seed_term,month):
+    df_text = read_month(month)
+    finder = BigramCollocationFinder.from_words(" ".join(df_text['text']).split(' '),window_size=10)
+    vocab = set(" ".join(df_text['text']).split(' '))
+
+    fig,ax = plt.subplots(1,1)
+    d = get_network(seed_term,finder,vocab,5)
+    g = nx.from_pandas_edgelist(d, source='source', target='target',create_using=nx.DiGraph()) 
+    
+    dgrs = dict(g.degree)
+    layout = nx.spring_layout(g,k=1.15)
+
+    nx.draw_networkx_nodes(g,layout,node_size=2,alpha=0)
+    nx.draw_networkx_edges(g, layout, width=1.5, alpha=.75, edge_color="#cccccc",arrows=True,arrowstyle="-|>",arrowsize=50)
+    
+    for node, (x, y) in layout.items():
+        plt.text(x, y, node, fontsize=math.log(dgrs[node] * 5) * 6, ha='center', va='center',color = "red" if node == seed_term else "black",bbox=dict(facecolor='red', alpha=0.1))
+
+    nt = Network("500px", "500px",notebook=True,heading='')
+    nt.from_nx(g)
+    nt.show('test.html')
+
+    HtmlFile = open("resources/network.html", 'r', encoding='utf-8')
+    source_code = HtmlFile.read() 
+    components.html(source_code, height = 1200,width=900)
