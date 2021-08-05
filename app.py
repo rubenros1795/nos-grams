@@ -26,7 +26,7 @@ if __name__ == "__main__":
         st.write("""
             
             ## Welcome!
-            This dashboard offers the possibility to plot n-gram frequencies. N-grams are sequences of words. This viewer queries the archive of the Dutch national broadcaster NOS. Its web archive goes back until 2010.
+            This dashboard offers the possibility to plot _n_-gram frequencies. _N_-grams are sequences of words (in case you wondered). This viewer queries the archive of the Dutch national broadcaster NOS. Its web archive goes back until 2010. This viewer contains the _n_-gram data from 2010-01-01 until 2020-12-31. The original data is found on www.nos.nl/archief.
              
             The viewer supports only unigram queries. Wildcards (term\*) are also supported, but note that they can return many results.
             
@@ -38,7 +38,7 @@ if __name__ == "__main__":
             The data is scraped from the web archive and tokenized. Tokens consisting only of digits are removed and all text is lowercased. The data is stored in HDF5 format to speed things up. Please note that despite the compression, querying a lot of terms still takes some time.
 
             
-            All data belongs to NOS.nl.
+            The documentation can be found [here](https://github.com/rubenros1795/nos-grams).
 
             """)
 
@@ -49,11 +49,11 @@ if __name__ == "__main__":
     
     col1a, col2a, col3a, col4a = st.beta_columns((1,1,1,1))
 
-    viz_type = col1a.selectbox("Visualization type",("bar","line"))
+    viz_type = col1a.selectbox("Visualization type",("bars","lines"))
     rolling_input = col2a.text_input('Rolling Window Size')
 
     start_date = col3a.date_input('Start date', datetime.date(2010, 1, 1))
-    end_date = col4a.date_input('End date', datetime.date(2020, 5, 1))
+    end_date = col4a.date_input('End date', datetime.date(2020, 12, 1))
 
 
 
