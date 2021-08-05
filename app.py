@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import tables
 import json
 import altair as alt
 from functions import *
@@ -11,8 +12,6 @@ import nltk
 from nltk.collocations import *
 from operator import itemgetter
 from glob import glob as gb
-from unidecode import unidecode
-from pyvis.network import Network
 import streamlit as st
 import streamlit.components.v1 as components
 
