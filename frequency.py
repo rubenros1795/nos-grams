@@ -49,7 +49,6 @@ def frequency(ngram_input,rolling_input,relative_input,viz_type,start_date,end_d
 
     ## If there are a lot of ngrams
     if len(ngram_input_split) > 10:
-        st.sidebar.write("You have many results. For visibility reduce number of ngrams.")
         split_list = [" or ".join(ngram_input_split[i:i + 10]) for i in range(0, len(ngram_input_split), 10)]
         df_list = []
 
@@ -137,7 +136,7 @@ def frequency(ngram_input,rolling_input,relative_input,viz_type,start_date,end_d
             y='Frequency',
             color=alt.Color('Ngram', scale=alt.Scale(scheme='tableau20')),
             tooltip=['Ngram','Frequency']
-        ).properties(width=1000,height=300).configure_axis(grid=True)
+        ).properties(width=1000,height=300).configure_axis(grid=True,gridColor='lightgrey')
 
 
     if viz_type == "bar":
@@ -147,5 +146,13 @@ def frequency(ngram_input,rolling_input,relative_input,viz_type,start_date,end_d
             color=alt.Color('Ngram', scale=alt.Scale(scheme='tableau20')),
         ).properties(width=1000,height=300).configure_axis(grid=True).configure_view(stroke="transparent")
 
+
+    bar.configure_legend(
+        strokeColor='gray',
+        fillColor='#EEEEEE',
+        padding=10,
+        cornerRadius=10,
+        orient='top-right'
+    )
 
     return bar,df

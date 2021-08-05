@@ -24,16 +24,18 @@ if __name__ == "__main__":
 
     with st.beta_expander("Read more..."):
         st.write("""
+            
+            ## Welcome!
             This dashboard offers the possibility to plot n-gram frequencies. N-grams are sequences of words. This viewer queries the archive of the Dutch national broadcaster NOS. Its web archive goes back until 2010.
              
-            The viewer supports only unigram queries. Wildcards ("politiek*" and "*politiek") are also supported, but note that they can return many results.
+            The viewer supports only unigram queries. Wildcards (term\*) are also supported, but note that they can return many results.
             
             Customize your search by date and choose between absolute and relative frequency (frequency of a term shared by the total number of tokens in that month). 
             
-            *Data*
+            ## Data
 
 
-            The data is scraped from the web archive and subsequently tokenized. Tokens with only digits are removed and everything is lowercased. The data is stored in HDF5 format to speed things up. Please note that despite the compression, querying bigrams is still relatively slow.
+            The data is scraped from the web archive and tokenized. Tokens consisting only of digits are removed and all text is lowercased. The data is stored in HDF5 format to speed things up. Please note that despite the compression, querying a lot of terms still takes some time.
 
             
             All data belongs to NOS.nl.
@@ -69,5 +71,6 @@ if __name__ == "__main__":
                 end_date
                 )
 
+        alt.renderers.enable(embed_options={'theme': 'urbaninstitute'})
         st.altair_chart(bar, use_container_width=True)
         st.markdown(get_table_download_link(df), unsafe_allow_html=True)
