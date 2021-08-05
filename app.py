@@ -27,7 +27,7 @@ if __name__ == "__main__":
         st.write("""
             This dashboard offers the possibility to plot n-gram frequencies. N-grams are sequences of words. This viewer queries the archive of the Dutch national broadcaster NOS. Its web archive goes back until 2010.
              
-            The viewer supports unigram and bigram queries. Wildcards ("politiek*" and "*politiek") are also supported, but note that they can return many results.
+            The viewer supports only unigram queries. Wildcards ("politiek*" and "*politiek") are also supported, but note that they can return many results.
             
             Customize your search by date and choose between absolute and relative frequency (frequency of a term shared by the total number of tokens in that month). 
             
