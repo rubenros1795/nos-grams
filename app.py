@@ -53,7 +53,7 @@ if __name__ == "__main__":
     rolling_input = col2a.text_input('Rolling Window Size')
 
     start_date = col3a.date_input('Start date', datetime.date(2010, 1, 1))
-    end_date = col4a.date_input('End date', datetime.date(2020, 12, 1))
+    end_date = col4a.date_input('End date', datetime.date(2021, 1, 1))
 
 
 
