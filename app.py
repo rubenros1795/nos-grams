@@ -63,13 +63,12 @@ if __name__ == "__main__":
     button_execute = col4a.button('Run!')
 
     if ngram_input and button_execute:
-        bar,df = frequency(ngram_input,
-                rolling_input,
-                relative_input,
-                viz_type,
-                start_date,
-                end_date
-                )
+        bar,df = frequency(ngram_input=ngram_input,
+                rolling_input=rolling_input,
+                relative_input=relative_input,
+                viz_type=viz_type,
+                start_date=start_date,
+                end_date=end_date)
 
         alt.renderers.enable(embed_options={'theme': 'urbaninstitute'})
         st.altair_chart(bar, use_container_width=True)
