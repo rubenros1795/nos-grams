@@ -14,7 +14,7 @@ def load_resources():
     vocab = set(pd.read_csv('resources/unique_terms.csv')['w'].tolist())
     return totals,vocab
 
-def frequency(ngram_input,rolling_input,relative_input,viz_type,start_date,end_date):
+def frequency(ngram_input="",rolling_input=0,relative_input=False,viz_type="bar",start_date=datetime.date(2010, 1, 1),end_date=datetime.date(2021, 1, 1)):
     ## Load Resources
     totals,vocab = load_resources()
     
@@ -22,7 +22,7 @@ def frequency(ngram_input,rolling_input,relative_input,viz_type,start_date,end_d
     original_input = ngram_input.split(',')
     ngram_input = original_input
 
-    unigrams = [x.strip() for x in ngram_input if "*" not in x and " " not in x]
+    unigrams = [x.strip() for x in ngram_input if "*" not in x and " " not in x.strip()]
     bigrams = [x.strip() for x in ngram_input if " " in x and "*" not in x]
     wildcards = [x.strip() for x in ngram_input if "*" in x]
 
@@ -30,6 +30,10 @@ def frequency(ngram_input,rolling_input,relative_input,viz_type,start_date,end_d
 
     if len(unigrams + bigrams + wildcards) == 0:
         st.write("Please enter a valid query. Currently, only unigrams are supported.")
+
+    else:
+        st.write("Querying:", ", ".join(unigrams + bigrams + wildcards))
+
 
     # Find ngrams in case of wildcard
     if len(wildcards) > 0:
@@ -129,7 +133,7 @@ def frequency(ngram_input,rolling_input,relative_input,viz_type,start_date,end_d
 
     ## Print Frequency Plot
 
-    if viz_type == "line":
+    if viz_type == "lines":
 
         bar = alt.Chart(df).mark_line(point=True).encode(
             x=alt.X("Period:O", timeUnit="yearmonth", axis=alt.Axis(format="%Y-%m")),
@@ -148,7 +152,7 @@ def frequency(ngram_input,rolling_input,relative_input,viz_type,start_date,end_d
         return bar,df
 
 
-    if viz_type == "bar":
+    if viz_type == "bars":
         bar = alt.Chart(df).mark_bar().encode(
             x=alt.X("Period:O", timeUnit="yearmonth", axis=alt.Axis(format="%Y-%m")),
             y='Frequency',

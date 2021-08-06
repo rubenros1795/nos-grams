@@ -50,7 +50,7 @@ if __name__ == "__main__":
     col1a, col2a, col3a, col4a = st.beta_columns((1,1,1,1))
 
     viz_type = col1a.selectbox("Visualization type",("bars","lines"))
-    rolling_input = col2a.text_input('Rolling Window Size')
+    rolling_input = col2a.text_input('Rolling Window Size',0)
 
     start_date = col3a.date_input('Start date', datetime.date(2010, 1, 1))
     end_date = col4a.date_input('End date', datetime.date(2021, 1, 1))
@@ -62,7 +62,8 @@ if __name__ == "__main__":
     ## Execute Button
     button_execute = col4a.button('Run!')
 
-    if ngram_input and button_execute:
+
+    if ngram_input and rolling_input and viz_type and start_date and end_date and button_execute:
         bar,df = frequency(ngram_input=ngram_input,
                 rolling_input=rolling_input,
                 relative_input=relative_input,
