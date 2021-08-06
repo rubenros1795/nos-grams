@@ -145,6 +145,8 @@ def frequency(ngram_input,rolling_input,relative_input,viz_type,start_date,end_d
             cornerRadius=10,
             orient='top-right'
         )
+        return bar,df
+
 
     if viz_type == "bar":
         bar = alt.Chart(df).mark_bar().encode(
@@ -162,4 +164,4 @@ def frequency(ngram_input,rolling_input,relative_input,viz_type,start_date,end_d
             orient='top-right'
         )
 
-    return bar,df
+        return bar,df
